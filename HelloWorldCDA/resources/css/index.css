@@ -1,0 +1,30 @@
+* {
+    border: 1px solid red;
+    font-family: Helvetica, Arial, sans-serif;
+    position: relative;
+}
+
+  h1 {
+    color: SeaGreen;
+  }
+   
+
+  header {
+    position: relative;
+    text-align: center;
+  }
+
+  header li {
+    display: inline-block;
+    width: 100px;
+    text-align: center;
+  }
+
+  p, 
+  li {
+    font-size: 18px;
+  }
+   
+  a {
+    text-decoration: none;
+  }
