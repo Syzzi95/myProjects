@@ -1,0 +1,43 @@
+html {
+    display: block;
+}
+
+body {
+    font-family: 'Times New Roman', Times, serif;
+    background-color: #D3D3D3;
+}
+h1 {
+    text-align: center;
+}
+
+h2 {
+    text-align: center;
+    color: #191970;
+}
+
+table {
+    display: table;
+    box-sizing: border-box;
+    margin: 0 auto;
+    width: 75%; 
+    border: 1px solid black;
+}
+
+th{
+    vertical-align: inherit;
+    font-size: 2em;
+    border: 1px solid black;
+}
+
+thead{
+    background-color: #808080;
+}
+
+td {
+    border: 1px solid black;
+}
+
+.format {
+    background-color: beige;
+
+}
