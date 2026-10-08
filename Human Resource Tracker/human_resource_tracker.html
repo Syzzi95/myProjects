@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bench &amp; Initiative Tracker</title>
+  <link rel="stylesheet" href="human_resource_styles.css" />
+
+</head>
+<body>
+  
+<!-- ================= APP BAR ================= -->
+<header class="appbar">
+  <div class="brand">
+    <div class="logo">B</div>
+    <div><h1>Bench &amp; Initiative Tracker</h1><small>Capacity &amp; internal work, off-project</small></div>
+  </div>
+  <div class="spacer"></div>
+  <button class="btn" id="btnImport" title="Import JSON">⬆ Import</button>
+  <button class="btn" id="btnExport" title="Export all data as JSON">⬇ Export JSON</button>
+  <button class="btn danger" id="btnReset" title="Restore demo data">↺ Reset demo</button>
+  <label class="switch" title="Toggle light/dark mode" aria-label="Toggle dark mode">
+    <input type="checkbox" id="themeToggle" />
+    <span class="slider"></span>
+  </label>
+</header>
+
+<!-- ================= TABS ================= -->
+<nav class="tabs" role="tablist" aria-label="Views">
+  <button data-view="dashboard" class="active" role="tab">Dashboard</button>
+  <button data-view="workload" role="tab">Workload</button>
+  <button data-view="people" role="tab">People</button>
+  <button data-view="initiatives" role="tab">Initiatives</button>
+  <button data-view="allocations" role="tab">Allocations</button>
+</nav>
+
+<main>
+  <!-- ================= DASHBOARD ================= -->
+  <section id="dashboard" class="view active" role="tabpanel">
+    <div class="cards" id="summaryCards"></div>
+    <div class="panel">
+      <h2>Capacity by person</h2>
+      <p class="hint">Allocated vs. remaining available hours per week. Red segments mark over-allocation (&gt;100%).</p>
+      <canvas id="capacityChart" height="300" aria-label="Capacity bar chart"></canvas>
+      <div class="legend">
+        <span><i style="background:var(--primary)"></i> Allocated</span>
+        <span><i style="background:var(--surface-2);border:1px solid var(--border)"></i> Remaining</span>
+        <span><i style="background:var(--red)"></i> Over-allocated</span>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Active initiatives by category</h2>
+      <p class="hint">Where benched capacity is being invested right now.</p>
+      <canvas id="categoryChart" height="240" aria-label="Category chart"></canvas>
+    </div>
+  </section>
+
+  <!-- ================= WORKLOAD ================= -->
+  <section id="workload" class="view" role="tabpanel">
+    <div class="toolbar">
+      <div class="grow"><input type="search" id="wlSearch" placeholder="🔍 Search people…" aria-label="Search workload" /></div>
+      <select id="wlStatus" style="width:auto" aria-label="Filter by status">
+        <option value="">All statuses</option>
+        <option>Available</option><option>Partially Allocated</option>
+        <option>Fully Allocated</option><option>On Leave</option>
+      </select>
+    </div>
+    <div class="cards" id="wlFlags"></div>
+    <div class="table-wrap">
+      <table id="wlTable">
+        <thead><tr>
+          <th data-k="name">Person</th><th data-k="role">Role</th>
+          <th data-k="capacity">Capacity</th><th data-k="allocated">Allocated</th>
+          <th class="no-sort">Utilization</th><th data-k="util">%</th><th class="no-sort">Flag</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= PEOPLE ================= -->
+  <section id="people" class="view" role="tabpanel">
+    <div class="toolbar">
+      <div class="grow"><input type="search" id="pplSearch" placeholder="🔍 Search by name or role…" aria-label="Search people" /></div>
+      <select id="pplStatus" style="width:auto" aria-label="Filter people by status">
+        <option value="">All statuses</option>
+        <option>Available</option><option>Partially Allocated</option>
+        <option>Fully Allocated</option><option>On Leave</option>
+      </select>
+      <button class="btn sm" id="pplCsv">⬇ CSV</button>
+      <button class="btn primary" id="addPerson">＋ Add person</button>
+    </div>
+    <div class="table-wrap">
+      <table id="pplTable">
+        <thead><tr>
+          <th data-k="name">Name</th><th data-k="role">Role</th><th data-k="location">Location</th>
+          <th data-k="status">Status</th><th data-k="capacity">Capacity (h/wk)</th>
+          <th data-k="availableFrom">Available from</th><th class="no-sort">Actions</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= INITIATIVES ================= -->
+  <section id="initiatives" class="view" role="tabpanel">
+    <div class="toolbar">
+      <div class="grow"><input type="search" id="iniSearch" placeholder="🔍 Search initiatives…" aria-label="Search initiatives" /></div>
+      <select id="iniCat" style="width:auto" aria-label="Filter by category">
+        <option value="">All categories</option>
+        <option>Sales/Pre-sales</option><option>R&amp;D</option><option>Training</option>
+        <option>Internal Tooling</option><option>Recruiting</option><option>Admin</option>
+      </select>
+      <select id="iniPrio" style="width:auto" aria-label="Filter by priority">
+        <option value="">All priorities</option><option>High</option><option>Med</option><option>Low</option>
+      </select>
+      <button class="btn sm" id="iniCsv">⬇ CSV</button>
+      <button class="btn primary" id="addInitiative">＋ Add initiative</button>
+    </div>
+    <div class="table-wrap">
+      <table id="iniTable">
+        <thead><tr>
+          <th data-k="name">Initiative</th><th data-k="category">Category</th><th data-k="owner">Owner</th>
+          <th data-k="priority">Priority</th><th data-k="status">Status</th>
+          <th data-k="targetDate">Target</th><th class="no-sort">Actions</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= ALLOCATIONS ================= -->
+  <section id="allocations" class="view" role="tabpanel">
+    <div class="toolbar">
+      <div class="grow"><input type="search" id="allSearch" placeholder="🔍 Search allocations…" aria-label="Search allocations" /></div>
+      <button class="btn sm" id="allCsv">⬇ CSV</button>
+      <button class="btn primary" id="addAllocation">＋ Add allocation</button>
+    </div>
+    <div class="table-wrap">
+      <table id="allTable">
+        <thead><tr>
+          <th data-k="person">Person</th><th data-k="initiative">Initiative</th>
+          <th data-k="hours">Hours/wk</th><th data-k="start">Start</th><th data-k="end">End</th>
+          <th class="no-sort">Actions</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<!-- ================= MODAL ================= -->
+<div class="modal-backdrop" id="modalBack" role="dialog" aria-modal="true">
+  <div class="modal">
+    <header><h3 id="modalTitle">Edit</h3><button class="btn icon" id="modalClose" aria-label="Close">✕</button></header>
+    <div class="body" id="modalBody"></div>
+    <div class="foot">
+      <button class="btn" id="modalCancel">Cancel</button>
+      <button class="btn primary" id="modalSave">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<input type="file" id="fileInput" accept="application/json" style="display:none" />
+<script src="resource_app.js" defer></script>
+
+</body>
+</html>

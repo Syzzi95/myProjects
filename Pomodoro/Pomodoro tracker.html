@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pomodoro Timer</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="brand" aria-label="Pomodoro Timer">
+        <span class="dot" aria-hidden="true"></span>
+        <span>Pomodoro</span>
+      </div>
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle color theme">
+        <span id="themeIcon" aria-hidden="true">🌙</span>
+        <span id="themeLabel">Dark</span>
+      </button>
+    </header>
+
+    <main>
+      <!-- Mode selector -->
+      <section class="card" aria-label="Timer settings">
+        <div class="modes" role="tablist" aria-label="Timer modes">
+          <button class="mode-btn" role="tab" aria-pressed="true" data-mode="focus">Focus</button>
+          <button class="mode-btn" role="tab" aria-pressed="false" data-mode="short">Short · 5</button>
+          <button class="mode-btn" role="tab" aria-pressed="false" data-mode="long">Long · 15</button>
+        </div>
+
+        <!-- Focus length picker -->
+        <div id="lengthPicker" class="length-picker">
+          <div class="picker-label">
+            <span>Focus session length</span>
+            <span id="lengthHint" aria-hidden="true">minutes</span>
+          </div>
+          <div class="length-options" role="radiogroup" aria-label="Focus session length in minutes">
+            <button class="length-btn" role="radio" aria-checked="false" data-minutes="15" type="button">15</button>
+            <button class="length-btn" role="radio" aria-checked="false" data-minutes="20" type="button">20</button>
+            <button class="length-btn" role="radio" aria-checked="true"  data-minutes="25" type="button">25</button>
+            <button class="length-btn" role="radio" aria-checked="false" data-minutes="30" type="button">30</button>
+            <button class="length-btn" role="radio" aria-checked="false" data-minutes="35" type="button">35</button>
+            <button class="length-btn" role="radio" aria-checked="false" data-minutes="40" type="button">40</button>
+            <button class="length-btn" role="radio" aria-checked="false" data-minutes="45" type="button">45</button>
+            <button class="length-btn" role="radio" aria-checked="false" data-minutes="50" type="button">50</button>
+            <button class="length-btn" role="radio" aria-checked="false" data-minutes="55" type="button">55</button>
+            <button class="length-btn" role="radio" aria-checked="false" data-minutes="60" type="button">60</button>
+          </div>
+        </div>
+
+        <!-- Timer display -->
+        <div class="timer-wrap" aria-live="polite" aria-atomic="true">
+          <div class="ring" role="img" aria-label="Time remaining">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="track" cx="60" cy="60" r="54"></circle>
+              <circle id="progress" class="progress" cx="60" cy="60" r="54"
+                      stroke-dasharray="339.292" stroke-dashoffset="0"></circle>
+            </svg>
+            <div class="time">
+              <div id="digits" class="digits">25:00</div>
+              <div id="modeLabel" class="label">Focus</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+          <button id="startPause" class="btn primary" type="button" aria-label="Start timer">
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+            <span id="startPauseLabel">Start</span>
+          </button>
+          <button id="reset" class="btn" type="button" aria-label="Reset timer">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 12a9 9 0 1 0 3-6.7"/>
+              <polyline points="3 3 3 9 9 9"/>
+            </svg>
+            Reset
+          </button>
+        </div>
+      </section>
+
+      <!-- Stats -->
+      <section class="card" aria-label="Session statistics">
+        <div class="stats">
+          <div class="stat">
+            <div id="statFocus" class="value">0</div>
+            <div class="name">Focus done</div>
+          </div>
+          <div class="stat">
+            <div id="statShort" class="value">0</div>
+            <div class="name">Short breaks</div>
+          </div>
+          <div class="stat">
+            <div id="statLong" class="value">0</div>
+            <div class="name">Long breaks</div>
+          </div>
+        </div>
+        <div class="reset-stats">
+          <button id="resetStats" class="link-btn" type="button">Reset statistics</button>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Tip: press <kbd>Space</kbd> to start/pause, <kbd>R</kbd> to reset, <kbd>1</kbd>/<kbd>2</kbd>/<kbd>3</kbd> to switch modes.</p>
+    </footer>
+  </div>
+
+  <!-- In-page toast (replaces alert/confirm) -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
